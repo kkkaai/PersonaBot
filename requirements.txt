@@ -6,4 +6,5 @@ websockets==10.1
 
 
 # ROS
-# rclpy     ROS 2 Python client library
+# rclpy     # ROS 2 Python client library
+# rospy     # ROS 1 Python client library

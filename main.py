@@ -34,8 +34,28 @@ def handle_command(data):
     command = data.get('command')
     button_id = data.get('buttonId')
     print(f"Received command: {command}, from button: {button_id}")
-    #socketio.start_background_task(main_control.state_control.handle_command, command)
+
+    # Let State Machine's current State handle the command
     asyncio.run(main_control.state_control.handle_command(command))
+    #socketio.start_background_task(main_control.state_control.handle_command, command)
+
+    # Also let some important command pass-through to robot controllers
+    if command == "move_forward":
+        main_control.nav_controller.move(0.5, 0.0)
+    elif command == "move_backward":
+        main_control.nav_controller.move(-0.5, 0.0)
+    elif command == "turn_left":
+        main_control.nav_controller.move(0.0, 0.5)
+    elif command == "turn_right":
+        main_control.nav_controller.move(0.0, -0.5)
+    elif command == "stop":
+        main_control.nav_controller.stop()
+    elif command == "move_to_A":
+        main_control.nav_controller.move_to_goal('A')
+    elif command == "move_to_B":
+        main_control.nav_controller.move_to_goal('B')
+    elif command == "cancel_goal":
+        main_control.nav_controller.cancel_goal()
 
 
 
