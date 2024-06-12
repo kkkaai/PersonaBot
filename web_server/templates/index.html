@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Robot Operator Control Panel</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .button {
+            padding: 15px 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+        }
+        .red {
+            background-color: red;
+            color: white;
+        }
+        .green {
+            background-color: green;
+            color: white;
+        }
+        .blue {
+            background-color: blue;
+            color: white;
+        }
+        .yellow {
+            background-color: yellow;
+            color: black;
+        }
+        .gray {
+            background-color: gray;
+            color: white;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .column {
+            margin: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .group {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Robot Operator Control Panel</h1>
+    <div class="container">
+        <div class="row">
+            <button class="button red" onclick="sendCommand('emergency_stop', 'emergency_stop_button')">紧急停止</button>
+        </div>
+        <div class="row">
+            <div class="group column">
+                <h3>行走</h3>
+                <button class="button yellow" onclick="sendCommand('navigate_to_A', 'navigate_to_A_button')">导航到A</button>
+                <button class="button yellow" onclick="sendCommand('navigate_to_B', 'navigate_to_B_button')">导航到B</button>
+                <button class="button gray" onclick="sendCommand('move_forward', 'move_forward_button')">前进</button>
+                <button class="button gray" onclick="sendCommand('move_backward', 'move_backward_button')">后退</button>
+                <button class="button gray" onclick="sendCommand('turn_left', 'turn_left_button')">左转</button>
+                <button class="button gray" onclick="sendCommand('turn_right', 'turn_right_button')">右转</button>
+                <button class="button red" onclick="sendCommand('stop', 'stop_button')">停止</button>
+            </div>
+            <div class="group column">
+                <h3>手</h3>
+                <button class="button green" onclick="sendCommand('auto_grab_on', 'auto_grab_on_button')">自动抓握开</button>
+                <button class="button red" onclick="sendCommand('auto_grab_off', 'auto_grab_off_button')">自动抓握关</button>
+                <button class="button blue" onclick="sendCommand('grab', 'grab_button')">抓握</button>
+                <button class="button blue" onclick="sendCommand('release', 'release_button')">放开</button>
+            </div>
+            <div class="group column">
+                <h3>臂</h3>
+                <button class="button red" onclick="sendCommand('arm_stop', 'arm_stop_button')">停止</button>
+                <h4>预定动作:</h4>
+                <button class="button gray" onclick="sendCommand('preset_action_1', 'preset_action_1_button')">动作1 伸手接话筒</button>
+                <button class="button gray" onclick="sendCommand('preset_action_2', 'preset_action_2_button')">动作2 话筒拿到胸前</button>
+                <button class="button gray" onclick="sendCommand('preset_action_3', 'preset_action_3_button')">动作3 归还话筒</button>
+                <h4>生成式行为:</h4>
+                <button class="button gray" onclick="sendCommand('generated_action_1', 'generated_action_1_button')">行为1 招手</button>
+                <button class="button gray" onclick="sendCommand('generated_action_2', 'generated_action_2_button')">行为2 感谢</button>
+                <button class="button gray" onclick="sendCommand('generated_action_3', 'generated_action_3_button')">行为3 再见</button>
+                <button class="button gray" onclick="sendCommand('generated_action_4', 'generated_action_4_button')">行为4 自然等待</button>
+            </div>
+            <div class="group column">
+                <h3>回答问题</h3>
+                <div class="column">
+                    <h4>自动回答问题</h4>
+                    <button class="button green" onclick="sendCommand('auto_answer_start', 'auto_answer_start_button')">开始</button>
+                    <button class="button red" onclick="sendCommand('auto_answer_stop', 'auto_answer_stop_button')">停止</button>
+                </div>
+                <div class="column">
+                    <h4>手动回答问题</h4>
+                    <button class="button gray" onclick="sendCommand('manual_answer_1', 'manual_answer_1_button')">回答问题1</button>
+                    <button class="button gray" onclick="sendCommand('manual_answer_2', 'manual_answer_2_button')">回答问题2</button>
+                    <button class="button gray" onclick="sendCommand('manual_answer_3', 'manual_answer_3_button')">回答问题3</button>
+                    <button class="button gray" onclick="sendCommand('manual_answer_4', 'manual_answer_4_button')">回答问题4</button>
+                </div>
+                <button class="button red" onclick="sendCommand('stop_all', 'stop_all_button')">停止声音和动作</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        var socket = io();
+
+        function sendCommand(command, buttonId) {
+            socket.emit('command', { command: command, buttonId: buttonId });
+        }
+    </script>
+</body>
+</html>

@@ -16,3 +16,26 @@
 
 **Project**
 The core of the project is the "Demo Main Control Logic," which coordinates the robot's actions by interfacing with lower-level ROS1 and ROS2 nodes for navigation, arm control, and dexterous hand movements. Additionally, the software generates an HTML-based GUI for remote operators to control and monitor the robot in real-time.
+
+
+## Getting Started
+
+**Prerequisites**
+Python 3.8+
+Required Python packages (listed in requirements.txt)
+
+**Installation**
+Install the required packages:
+pip install -r requirements.txt
+
+**Running the Project**
+1. Set the PYTHONPATH environment variable to include the src directory:
+export PYTHONPATH=$PYTHONPATH:$(pwd)/src
+2. Start the web server:
+./scripts/start_server.sh
+3. Open your web browser and go to http://localhost:5000 to access the remote control interface.
+
+In Windows,
+cmd          set PYTHONPATH=%PYTHONPATH%;%cd%\src
+PowerShell   $env:PYTHONPATH="$env:PYTHONPATH;$(Get-Location)\src"
+python main.py
