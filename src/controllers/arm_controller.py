@@ -11,16 +11,16 @@ class ArmController(Node):
         self.namespace = namespace
 
         # joints control
-        self.joint_publishers = [
-            self.create_publisher(Float64, f'{namespace}/joint_{i}/command', 10)
-            for i in range(1, 8)
-        ]
+        #self.joint_publishers = [
+        #    self.create_publisher(Float64, f'{namespace}/joint_{i}/command', 10)
+        #    for i in range(1, 8)
+        #]
 
         # end-effector pose control
-        self.pose_publisher = self.create_publisher(Pose, f'{namespace}/end_effector/pose_command', 10)
+        #self.pose_publisher = self.create_publisher(Pose, f'{namespace}/end_effector/pose_command', 10)
 
         # joint read out
-        self.joint_state_subscriber = self.create_subscription(JointState, f'{namespace}/joint_states', self.joint_state_callback, 10)
+        #self.joint_state_subscriber = self.create_subscription(JointState, f'{namespace}/joint_states', self.joint_state_callback, 10)
 
         self.current_joint_positions = {}
     

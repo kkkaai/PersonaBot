@@ -10,8 +10,6 @@ def main():
     navigation_controller.stop()  # Stop
     rospy.sleep(1)
     navigation_controller.move_to_goal('A')  # Move to goal A
-    rospy.sleep(10)
-    navigation_controller.cancel_goal()  # Cancel goal
 
     rospy.spin()
 

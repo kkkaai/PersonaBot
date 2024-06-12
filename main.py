@@ -54,9 +54,6 @@ def handle_command(data):
         main_control.nav_controller.move_to_goal('A')
     elif command == "move_to_B":
         main_control.nav_controller.move_to_goal('B')
-    elif command == "cancel_goal":
-        main_control.nav_controller.cancel_goal()
-
 
 
 if __name__ == '__main__':
