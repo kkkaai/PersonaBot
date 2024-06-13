@@ -1,4 +1,4 @@
-import rospy
+#import rospy
 #from inspire_hand.msg import angle_set, status
 #from inspire_hand.srv import set_angle, get_angle_act, get_status, set_force, get_force_act
 

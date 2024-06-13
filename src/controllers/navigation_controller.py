@@ -1,4 +1,4 @@
-import rospy
+#import rospy
 from geometry_msgs.msg import Twist
 from std_srvs.srv import Empty
 #from move_base_msgs.msg import MoveBaseActionGoal
@@ -29,6 +29,6 @@ class NavigationController:
         if goal_name in self.predefined_goals:
             goal = self.predefined_goals[goal_name]
             # Call publisher to move to a location
-        else:
-            rospy.logerr(f"Goal {goal_name} not found")
+#        else:
+#            rospy.logerr(f"Goal {goal_name} not found")
 

@@ -22,6 +22,8 @@ class ArmController(Node):
         self.joint_positions = Float64MultiArray()
         self.robot_velocities = Float64MultiArray()
 
+    def listener_callback(self, msg):
+        self.get_logger().info(f'Received state data: {msg}')
     
     def set_joint_positions(self, positions, velocities):
         self.mode.data = 1  # 关节位置模式
@@ -29,12 +31,10 @@ class ArmController(Node):
         self.robot_velocities.data = velocities
         self.publish_joint_command()
 
-
     def set_joint_velocities(self, velocities):
         self.mode.data = 2  # 关节速度模式
         self.robot_velocities.data = velocities
         self.publish_joint_command()
-
 
     def publish_joint_command(self):
         msg = JointState()

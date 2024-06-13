@@ -4,7 +4,7 @@ from .arm_controller import ArmController
 
 def test_arm_controller():
     rclpy.init()
-    arm_controller = ArmController('test_arm_controller')
+    arm_controller = ArmController('body_arm_controller')
 
     # Set joint positions and velocities for testing
     positions = [0.1] * 16
