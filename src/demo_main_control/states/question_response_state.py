@@ -1,10 +1,20 @@
 import asyncio
 from .base_state import BaseState
 from .natural_standby_state import NaturalStandbyState
+from src.demo_main_control.states.question_response_logic.question_response_logic_fixed import QuestionResponseLogicFixed
+from src.demo_main_control.states.question_response_logic.question_response_logic_dynamic import QuestionResponseLogicDynamic
+
 
 class QuestionResponseState(BaseState):
+    def __init__(self, fixed_answers_file):
+        super().__init__()
+        self.fixed_logic = QuestionResponseLogicFixed(fixed_answers_file)
+        self.dynamic_logic = QuestionResponseLogicDynamic()
+        self.current_logic = None
+        
     async def execute(self):
         print("Executing Question Response State")
+
         # Implementation for answering questions
         # Transition to next state if needed
 
@@ -16,9 +26,16 @@ class QuestionResponseState(BaseState):
 
     async def handle_command(self, command):
         print("Question Response State received a command")
-        if command == "some_command":
-            # Handle specific command
-            pass
+        if command == "auto_answer_start":
+            self.current_logic = self.dynamic_logic
+            await self.dynamic_logic.handle_question()
+        elif command == "auto_answer_stop":
+            self.current_logic = None  # Stop listening
+        elif command.startswith("manual_answer_"):
+            question_id = command.split("_")[-1]
+            self.current_logic = self.fixed_logic
+            self.set_question_id(question_id)
+            self.fixed_logic.handle_question()
         else:
-            # Delegate to parent class or handle default behavior
+            # Handle other commands or delegate to parent class
             await super().handle_command(command)
