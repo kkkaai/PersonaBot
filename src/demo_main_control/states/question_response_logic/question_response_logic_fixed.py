@@ -2,9 +2,11 @@ import json
 from .question_response_logic import QuestionResponseLogic
 
 class QuestionResponseLogicFixed(QuestionResponseLogic):
-    def __init__(self, answers_file):
+    def __init__(self):
         super().__init__()
-        with open(answers_file, 'r') as f:
+
+        self.answers_file = 'data/answers.json'
+        with open(self.answers_file, 'r') as f:
             self.answers = json.load(f)
 
 

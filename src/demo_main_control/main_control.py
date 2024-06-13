@@ -12,15 +12,17 @@ class MainControl:
         # State Machine
         self.state_control = StateControl()
 
-        # Robotics
+        # Robotics ROS2
         rclpy.init()
         self.arm_controller = ArmController('left_arm')
-        self.hand_controller = HandController('')
-        self.nav_controller = NavigationController('')
 
         # Create a separate thread to run ROS 2 spinning
         self.ros2_thread = threading.Thread(target=self.spin_ros2)
         self.ros2_thread.start()
+
+        # Robotics ROS1
+        self.hand_controller = HandController('')
+        self.nav_controller = NavigationController('')
 
         # Create a separate thread to run ROS 1 spinning
         self.ros1_thread = threading.Thread(target=self.spin_ros1)

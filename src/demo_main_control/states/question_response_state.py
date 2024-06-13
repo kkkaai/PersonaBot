@@ -6,9 +6,9 @@ from src.demo_main_control.states.question_response_logic.question_response_logi
 
 
 class QuestionResponseState(BaseState):
-    def __init__(self, fixed_answers_file):
-        super().__init__()
-        self.fixed_logic = QuestionResponseLogicFixed(fixed_answers_file)
+    def __init__(self, context):
+        super().__init__(context)
+        self.fixed_logic = QuestionResponseLogicFixed()
         self.dynamic_logic = QuestionResponseLogicDynamic()
         self.current_logic = None
         
