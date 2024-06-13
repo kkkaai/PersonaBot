@@ -1,45 +1,46 @@
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Float64
-from geometry_msgs.msg import Pose
 from sensor_msgs.msg import JointState
+from std_msgs.msg import Int16MultiArray, Float64MultiArray, Int16
 
+
+# 关节信息, 名称 : 0-1腰部 2-8右臂 9-15左臂#
+# mode : -1 去使能; 3全使能; 1 关节位置模式 ;2 关节速度模式
+# joint : 大小1×16 关节位置模式下的给定位置 0-1腰部 2-8右臂 9-15左臂
+# robotvel : 大小1×16 在关节速度模式下 关节按照给定速度运行;  在关节位置模式下 关节按照给定速度运行至给定位置后停止
 
 class ArmController(Node):
-    def __init__(self, namespace):
-        super().__init__('arm_controller')
-        self.namespace = namespace
 
-        # joints control
-        #self.joint_publishers = [
-        #    self.create_publisher(Float64, f'{namespace}/joint_{i}/command', 10)
-        #    for i in range(1, 8)
-        #]
+    def __init__(self, name):
+        super().__init__(name)
+        
+        self.publisher_ = self.create_publisher(JointState, '/cmdsub', 10)
+        self.subscription = self.create_subscription(JointState, '/robot_state', self.listener_callback, 10)
+        self.joint_state = JointState()
+        self.enable = Int16MultiArray()
+        self.mode = Int16()
+        self.joint_positions = Float64MultiArray()
+        self.robot_velocities = Float64MultiArray()
 
-        # end-effector pose control
-        #self.pose_publisher = self.create_publisher(Pose, f'{namespace}/end_effector/pose_command', 10)
-
-        # joint read out
-        #self.joint_state_subscriber = self.create_subscription(JointState, f'{namespace}/joint_states', self.joint_state_callback, 10)
-
-        self.current_joint_positions = {}
     
-    # joint read out
-    def joint_state_callback(self, msg):
-        self.current_joint_positions = dict(zip(msg.name, msg.position))
+    def set_joint_positions(self, positions, velocities):
+        self.mode.data = 1  # 关节位置模式
+        self.joint_positions.data = positions
+        self.robot_velocities.data = velocities
+        self.publish_joint_command()
 
-    def move_joint(self, joint_index, position):
-        if 0 <= joint_index < len(self.joint_publishers):
-            msg = Float64()
-            msg.data = position
-            self.joint_publishers[joint_index].publish(msg)
 
-    def move_all_joints(self, positions):
-        for i, position in enumerate(positions):
-            if i < len(self.joint_publishers):
-                self.move_joint(i, position)
+    def set_joint_velocities(self, velocities):
+        self.mode.data = 2  # 关节速度模式
+        self.robot_velocities.data = velocities
+        self.publish_joint_command()
 
-    def move_end_effector(self, pose):
-        if isinstance(pose, Pose):
-            self.pose_publisher.publish(pose)
+
+    def publish_joint_command(self):
+        msg = JointState()
+        msg.position = self.joint_positions.data
+        msg.velocity = self.robot_velocities.data
+        self.publisher_.publish(msg)
+
+
     

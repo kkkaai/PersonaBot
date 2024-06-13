@@ -1,48 +1,22 @@
 import rclpy
-from geometry_msgs.msg import Pose
-from src.controllers.arm_controller import ArmController
+from rclpy.node import Node
+from .arm_controller import ArmController
 
-def main(args=None):
-    print("rclpy.init")
-    rclpy.init(args=args)
+def test_arm_controller():
+    rclpy.init()
+    arm_controller = ArmController('test_arm_controller')
 
-    print("Create ArmController")
-    arm_controller = ArmController('left_arm')
+    # Set joint positions and velocities for testing
+    positions = [0.1] * 16
+    velocities = [0.1] * 16
 
-    pose = Pose()
-    pose.position.x = 0.1
-    pose.position.y = 0.2
-    pose.position.z = 0.3
-    pose.orientation.x = 0.0
-    pose.orientation.y = 0.0
-    pose.orientation.z = 0.0
-    pose.orientation.w = 1.0
+    arm_controller.set_joint_positions(positions, velocities)
 
-    print("ArmController set EE pose")
-    arm_controller.move_end_effector(pose)
+    rclpy.spin_once(arm_controller, timeout_sec=10)
 
-    # use a thread to maintain the node's running state.  later we will destroy the node.
-    def spin_arm_controller():
-        rclpy.spin(arm_controller)  # Keep the node running to handle callbacks and services
+    arm_controller.destroy_node()
+    rclpy.shutdown()
 
-    # start spin_arm_controller, and stop after 5 seconds
-    from threading import Thread
-    spin_thread = Thread(target=spin_arm_controller)
-    spin_thread.start()
-    print("ArmController thread started.")
-
-    try:
-        import time
-        time.sleep(5)
-    except KeyboardInterrupt:
-        pass
-    finally:
-        print("Destroy ArmController node.")
-        arm_controller.destroy_node()
-        rclpy.shutdown()
-        spin_thread.join()
-        print("rclpy shutdown.")
-        
 
 if __name__ == '__main__':
-    main()
+    test_arm_controller()
