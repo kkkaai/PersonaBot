@@ -3,6 +3,7 @@ import asyncio
 from .question_response_logic import QuestionResponseLogic
 
 from .utils import request_question, request_moss, request_tts
+from .utils import request_moss_motion, request_arm_angles
 #import some_asr_module  # Replace with actual ASR module
 #import some_tts_module  # Replace with actual TTS module
 #import some_llm_module  # Replace with actual LLM module, e.g., GPT-4
@@ -31,16 +32,16 @@ class QuestionResponseLogicDynamic(QuestionResponseLogic):
         
         # Step 4: Convert action description to movement sequence using MotionGPT
         # movement_sequence = some_motiongpt_module.generate_action(action_description)
-        # todo
+        _, response_motion = request_moss_motion(response_text)
+        arm_angles = request_arm_angles(response_motion)
         
         # Step 5: Convert response text to audio using TTS
         #response_audio = some_tts_module.tts(response_text)
         response_audio = request_tts(response_text) # request tts and play audio
 
         # Step 6: Play audio and execute arm movement
-        # self.play_audio(response_audio) 
-        # self.execute_arm_movement(movement_sequence)
-
+        # self.play_audio(response_audio)
+        self.execute_arm_movement(arm_angles)
 
     async def listen_to_question(self):
         # Code to capture audio from microphone

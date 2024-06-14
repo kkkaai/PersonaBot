@@ -15,6 +15,7 @@ class MainControl:
         # Robotics ROS2
         rclpy.init()
         self.arm_controller = ArmController('left_arm')
+        self.arm_controller_right = ArmController('right_arm')
 
         # Create a separate thread to run ROS 2 spinning
         self.ros2_thread = threading.Thread(target=self.spin_ros2)

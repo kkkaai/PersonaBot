@@ -1,14 +1,14 @@
 {
-    "1": {
-        "audio": "path_to_audio_file_1",
-        "movement": "path_to_movement_file_1"
-    },
-    "2": {
-        "audio": "path_to_audio_file_2",
-        "movement": "path_to_movement_file_2"
-    },
-    "3": {
-        "audio": "path_to_audio_file_3",
-        "movement": "path_to_movement_file_3"
-    }
+  "1": {
+    "audio": "path_to_audio_file_1",
+    "movement": "data/arm_motions/wave_hands_kp.csv"
+  },
+  "2": {
+    "audio": "path_to_audio_file_2",
+    "movement": "data/arm_motions/wave_hands_kp.csv"
+  },
+  "3": {
+    "audio": "path_to_audio_file_3",
+    "movement": "data/arm_motions/wave_hands_kp.csv"
+  }
 }

@@ -1,4 +1,6 @@
+import time
 import rclpy
+import numpy as np
 from rclpy.node import Node
 from sensor_msgs.msg import JointState
 from std_msgs.msg import Int16MultiArray, Float64MultiArray, Int16
@@ -21,9 +23,35 @@ class ArmController(Node):
         self.mode = Int16()
         self.joint_positions = Float64MultiArray()
         self.robot_velocities = Float64MultiArray()
+        
+        # Load the preset positions
+        self.preset_paths = {
+            "generated_action_1": "data/arm_motions/wave_hands.csv",
+            "generated_action_2": "data/arm_motions/shake_hands.csv",
+            "generated_action_3": "data/arm_motions/goodbye.csv",
+            "generated_action_4": "data/arm_motions/standby.csv",
+        }
+        for key, path in self.preset_paths.items():
+            with open(path, 'r') as f:
+                self.preset_paths[key] = f.readlines()
+            self.preset_paths[key] = [list(map(float, line.strip().split(','))) for line in self.preset_paths[key]]
+            self.preset_paths[key] = np.array(self.preset_paths[key])
+        
 
     def listener_callback(self, msg):
         self.get_logger().info(f'Received state data: {msg}')
+        
+    def set_joint_rotations(self, rotations, fps=20):
+        """
+        Set joint rotations
+        :param rotations: np.ndarray, shape (T, 9)
+        """
+        # Rotation values are in radians with T rows and 9 columns
+        # [q1, q2, q3, q4, q5, q6, q7, q8, q9]
+        for i in range(rotations.shape[0]):
+            # TODO: ROS2 code to set joint rotations
+            raise NotImplementedError("This method should be implemented by subclasses")
+            time.sleep(1/fps)
     
     def set_joint_positions(self, positions, velocities):
         self.mode.data = 1  # 关节位置模式
@@ -42,5 +70,11 @@ class ArmController(Node):
         msg.velocity = self.robot_velocities.data
         self.publisher_.publish(msg)
 
-
+    def move_preset(self, preset_name):
+        """
+        Move to a preset position
+        :param preset_name: str, name of the preset position
+        """
+        preset = self.preset_paths[preset_name]
+        self.set_joint_rotations(preset)
     
