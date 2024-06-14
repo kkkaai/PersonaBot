@@ -54,23 +54,12 @@ Then run
 python main.py
 ```
 
-**ROS node setup**
+**ROS setup**
 
-ROS 2 node for controlling the Robot Arms are on a remote computer, need to make sure Python code here can correctly access it through network.
-ROS_MASTER_URI environment variable tells a node where to find the rosmaster. All nodes in the network when launched should have the same ROS_MASTER_URI.   
-ROS_HOSTNAME environment variable contains the address of the node, When node A connects to rosmaster it provides rosmaster with the value of ROS_HOSTNAME. rosmaster uses this address to tell other nodes how to contact node A.
-1. Setup Remote ROS2 node
-Set environment variable on the remote computer:
+The low level ROS 2 node for controlling the Robot Arms are on a remote computer, need to make sure Python code here can correctly access it through network.
+1. Set the ROS_DOMAIN_ID environment variable:
+Ensure that the computer running this Python project and and the computer running low level robotic control ROS2 node have the same ROS_DOMAIN_ID value set.
 ```bash
-export ROS_DOMAIN_ID=0  # Make sure all computers in the local network use the same domain ID
-export ROS_MASTER_URI=<remote_host_ip>:11311
-export ROS_HOSTNAME=<local_host_ip>
-```
-2. Setup local computer
-Make sure local computer and remote computers used the same domain ID
-```bash
-export ROS_DOMAIN_ID=0
-export ROS_MASTER_URI=http://<remote_host_ip>:11311
-export ROS_HOSTNAME=<local_host_ip>
+export ROS_DOMAIN_ID=<domain_id>
 ```
 
