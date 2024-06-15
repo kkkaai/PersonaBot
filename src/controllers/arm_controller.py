@@ -37,7 +37,6 @@ class ArmController(Node):
             self.preset_paths[key] = [list(map(float, line.strip().split(','))) for line in self.preset_paths[key]]
             self.preset_paths[key] = np.array(self.preset_paths[key])
         
-
     def listener_callback(self, msg):
         self.get_logger().info(f'Received state data: {msg}')
         

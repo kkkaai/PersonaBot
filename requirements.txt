@@ -4,6 +4,7 @@ Werkzeug==2.3.7
 Flask-SocketIO==5.1.1
 websockets==10.1
 requests
+scipy
 
 # ROS
 # rclpy     # ROS 2 Python client library
