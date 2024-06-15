@@ -1,0 +1,14 @@
+#ok
+int16[] dxl_id
+float32[] dxll_tarposition
+float32[] dxlr_tarposition
+float32[] dxll_tarvel
+float32[] dxlr_tarvel
+
+float32[] dxll_tarpose
+float32[] dxlr_tarpose
+
+
+---
+bool[] success
+int16 id

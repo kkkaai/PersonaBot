@@ -1,0 +1,9 @@
+int16 id
+int16[] hand
+
+int16[] handvel
+
+int16[] handtor
+
+---
+bool success

@@ -29,14 +29,37 @@ Install the required packages:
 pip install -r requirements.txt
 ```
 
+**ROS setup**
+
+1. Install ROS2
+
+2. Set the ROS_DOMAIN_ID environment variable:
+The low level ROS 2 node for controlling the Robot Arms are on a remote computer. The computer running this Python project need to be in the same local network.
+Ensure that the computer running this Python project and and the computer running low level robotic control ROS2 node have the same ROS_DOMAIN_ID value set.
+```bash
+export ROS_DOMAIN_ID=<domain_id>
+```
+
+2. Build and source ROS package for arm motor message definitiion
+
+See Wiki page [Manual arm motor control](https://github.com/existenz98/PersonaBot/wiki/Manual-arm-motor-control)
+
+
 **Running the Project**
-1. Set the PYTHONPATH environment variable to include the src directory:
+
+1. source ROS2 environment
+```
+source <your ros2 path>/setup.bash
+```
+e.g.  source /opt/ros/humble/setup.bash
+
+2. Set the PYTHONPATH environment variable to include the src directory:
 ```bash
 export PYTHONPATH=$PYTHONPATH:$(pwd)/src
 ```
-2. Start the web server:
+3. Start:
 ```bash
-./scripts/start_server.sh
+python main.py
 ```
 3. Open your web browser and go to http://localhost:5000 to access the remote control interface.
 
@@ -53,13 +76,3 @@ Then run
 ```
 python main.py
 ```
-
-**ROS setup**
-
-The low level ROS 2 node for controlling the Robot Arms are on a remote computer, need to make sure Python code here can correctly access it through network.
-1. Set the ROS_DOMAIN_ID environment variable:
-Ensure that the computer running this Python project and and the computer running low level robotic control ROS2 node have the same ROS_DOMAIN_ID value set.
-```bash
-export ROS_DOMAIN_ID=<domain_id>
-```
-
