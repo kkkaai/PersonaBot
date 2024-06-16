@@ -1,5 +1,5 @@
 from src.demo_main_control.main_control import MainControl
-from 3rdParty.inspire_hand.python.inspire-hand-RH56-demo import *
+from src.controllers.inspire_hand_RH56_demo import *
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 import os
@@ -76,7 +76,7 @@ def robot_controller_hand_command(command):
         grasp()
     elif command == "release":
         loose()
-    elif command == "clear_err"
+    elif command == "clear_err":
         clearErr()
         set_pos(0, 0, 0, 0, 0, 0)
 
