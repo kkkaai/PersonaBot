@@ -1,5 +1,5 @@
 from src.demo_main_control.main_control import MainControl
-from 3rdParty.inspire_hand.python.inspire-hand-RH56-demo import *
+from 3rdParty.inspire_hand.python.inspire_hand_RH56_demo import *
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 import os
