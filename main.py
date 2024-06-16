@@ -15,10 +15,10 @@ static_dir = os.path.abspath('web_server/static')
 print(f"Template directory: {template_dir}")
 print(f"Static directory: {static_dir}")
 app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
+socketio = SocketIO(app)
 
 
 # Create Robot Control Logic
-socketio = SocketIO(app)
 main_control = MainControl()
 
 
@@ -36,11 +36,18 @@ def handle_command(data):
     button_id = data.get('buttonId')
     print(f"Received command: {command}, from button: {button_id}")
 
+    # Let Robot controller handle the command
+    robot_controller_hand_command(command)
+
     # Let State Machine's current State handle the command
     asyncio.run(main_control.state_control.handle_command(command))
     #socketio.start_background_task(main_control.state_control.handle_command, command)
 
+
+def robot_controller_hand_command(command):
     # Also let some important command pass-through to robot controllers
+    
+    # Navigation
     if command == "move_forward":
         main_control.nav_controller.move(0.5, 0.0)
     elif command == "move_backward":
@@ -55,9 +62,12 @@ def handle_command(data):
         main_control.nav_controller.move_to_goal('A')
     elif command == "move_to_B":
         main_control.nav_controller.move_to_goal('B')
+        
+    # Arm Movement
     elif command.startswith("generated_action"):
-        main_control.arm_controller_right.move_preset(command)
-    #hand
+        main_control.arm_controller.handle_command(command)
+        
+    # Hand Actions
     elif command == "auto_grasp_on":
         auto_grasp_on()
     elif command == "auto_grasp_off":

@@ -40,9 +40,17 @@ Ensure that the computer running this Python project and and the computer runnin
 export ROS_DOMAIN_ID=<domain_id>
 ```
 
-2. Build and source ROS package for arm motor message definitiion
+2. Build and source ROS package for Arm motor message definitiion
 
+Because Arm ROS2 node uses custom message definition, so you need to build a package before you can use it in Python.
 See Wiki page [Manual arm motor control](https://github.com/existenz98/PersonaBot/wiki/Manual-arm-motor-control)
+
+After building the package in 3rdParty/body_arms/ros/cmdsub_ws folder, you need to source it:
+```bash
+source 3rdParty/body_arms/ros/cmdsub_ws/install/setup.bash
+```
+
+For Navigation control, the ROS2 node uses standard geometry_msgs/msg/Twist message.  So you can use it directly without building custom ROS package.
 
 
 **Running the Project**
@@ -52,6 +60,10 @@ See Wiki page [Manual arm motor control](https://github.com/existenz98/PersonaBo
 source <your ros2 path>/setup.bash
 ```
 e.g.  source /opt/ros/humble/setup.bash
+
+```bash
+source 3rdParty/body_arms/ros/cmdsub_ws/install/setup.bash
+```
 
 2. Set the PYTHONPATH environment variable to include the src directory:
 ```bash
