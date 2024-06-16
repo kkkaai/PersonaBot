@@ -1,4 +1,5 @@
 from src.demo_main_control.main_control import MainControl
+from 3rdParty.inspire_hand.python.inspire-hand-RH56-demo import *
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 import os
@@ -56,7 +57,18 @@ def handle_command(data):
         main_control.nav_controller.move_to_goal('B')
     elif command.startswith("generated_action"):
         main_control.arm_controller_right.move_preset(command)
-        
+    #hand
+    elif command == "auto_grasp_on":
+        auto_grasp_on()
+    elif command == "auto_grasp_off":
+        auto_grasp_off()
+    elif command == "grab":
+        grasp()
+    elif command == "release":
+        loose()
+    elif command == "clear_err"
+        clearErr()
+        set_pos(0, 0, 0, 0, 0, 0)
 
 
 if __name__ == '__main__':
