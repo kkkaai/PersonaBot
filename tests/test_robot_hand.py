@@ -191,12 +191,12 @@ if __name__ == '__main__':
         for i in range(6):
             # stage 4:grasp microphone
             if grasp_done is False:
-                if force_act[i] >= 200:
+                if force_act[i] >= force_start_grasp:
                     grasp()
                     grasp_done = True
             # stage 5:loose microphone
             if grasp_done & loose_done is False:
-                if force_act[i] >= force_start_grasp:
+                if force_act[i] >= force_loose_limit:
                     loose()
                     time.sleep(1)
                     loose_done = True
