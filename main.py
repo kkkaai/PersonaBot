@@ -66,7 +66,7 @@ def handle_command(data):
         grasp()
     elif command == "release":
         loose()
-    elif command == "clear_err"
+    elif command == "clear_err":
         clearErr()
         set_pos(0, 0, 0, 0, 0, 0)
 
