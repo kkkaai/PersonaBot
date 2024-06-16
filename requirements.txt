@@ -5,6 +5,7 @@ Flask-SocketIO==5.1.1
 websockets==10.1
 requests
 scipy
+pyserial
 
 # ROS
 # rclpy     # ROS 2 Python client library
