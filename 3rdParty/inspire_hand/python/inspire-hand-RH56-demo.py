@@ -20,9 +20,11 @@ regdict = {
     'actionRun': 2322
 }
 
-force_grasp_limit = 240
+force_start_grasp = 240
+force_grasp_limit = 500
 force_loose_limit = 1100
 
+auto_grasp = False
 
 def openSerial(port, baudrate):
     ser = serial.Serial()
@@ -149,3 +151,30 @@ def forceClb():
 
 def clearErr():
     writeRegister(ser, 1, regdict['clearErr'], 1, [1])
+
+def auto_grasp_on():
+    auto_grasp = True
+    while auto_grasp:
+        force_act = read_force();
+        for i in range(6):
+            # stage 4:grasp microphone
+            if grasp_done is False:
+                if force_act[i] >= force_start_grasp:
+                    grasp()
+                    grasp_done = True
+            # stage 5:loose microphone
+            if grasp_done & loose_done is False:
+                if force_act[i] >= force_loose_limit:
+                    loose()
+                    time.sleep(1)
+                    loose_done = True
+                    break
+            if loose_done is True:
+                auto_grasp=False
+                break
+        # stage 6
+        set_pos(0, 0, 0, 0, 0, 0)
+
+def auto_grasp_off():
+    auto_grasp = False
+    set_pos(0, 0, 0, 0, 0, 0)
